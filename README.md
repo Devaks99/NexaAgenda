@@ -26,7 +26,7 @@
 
 ### 📱 Mobile  
 
-![Tela mobile NexaAgenda](https://github.com/user-attachments/assets/74738db8-c6dc-436d-ade4-be796c1db887)
+![Tela mobile NexaAgenda](https://github.com/user-attachments/assets/9d7e4f0c-2cbf-453f-920e-6f662e65770f)
 
 ---
 
