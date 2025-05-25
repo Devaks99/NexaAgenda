@@ -24,10 +24,6 @@
 
 ![Tela desktop NexaAgenda](https://github.com/user-attachments/assets/5cad8db3-5d63-4386-add6-92598a65d471)
 
-### 📱 Mobile  
-
-![Tela mobile NexaAgenda](https://github.com/user-attachments/assets/9d7e4f0c-2cbf-453f-920e-6f662e65770f)
-
 ---
 
 ## 🔧 Estrutura do Projeto
