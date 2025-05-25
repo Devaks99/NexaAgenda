@@ -1,0 +1,200 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  overflow-x: hidden; 
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  margin: 20px auto 0 auto; 
+  padding: 0 20px; 
+  flex: 1; 
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: #1c1c1c;
+  border-left: 5px solid #00bcd4;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  transition: 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li.highlight {
+  border-left-color: #4caf50;
+}
+
+li:hover {
+  transform: scale(1.02);
+  background-color: #2a2a2a;
+}
+
+button {
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #1c1c1c;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+#modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00bcd4; 
+  margin-bottom: 10px;
+}
+
+#modal-local {
+  color: #4fc3f7; 
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.close {
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Estilo para o link do Google Agenda */
+#google-calendar-link {
+  display: inline-block;
+  margin-top: 15px;
+  color: #4fc3f7;
+  text-decoration: none !important;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+#google-calendar-link:hover {
+  color: #00bcd4;
+  text-decoration: underline;
+}
+
+footer {
+  width: 100%;
+  background: #1c1c1c9f;
+  color: #00bcd4;
+  text-align: center;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 500;
+  border-top: 1px solid #00bcd4;
+  margin-top: 20px;
+  position: relative; 
+}
+
+/* >>>>> Responsividade <<<<< */
+
+@media(min-width: 601px) {
+  body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+  .page-wrapper {
+    min-height: 100vh; 
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1; 
+  }
+
+  footer {
+    position: relative; 
+  }
+
+   li button {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .container {
+    padding: 0 10px;
+  }
+  
+  #event-list {
+    padding: 0 10px; /* Adiciona espaço nas laterais */
+    max-width: 95%;  
+    margin: 0 auto;  
+  }
+
+   li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  li button {
+    width: 50%;
+    margin-top: 15px;
+    margin: 20px auto 0 auto;
+  }
+}
