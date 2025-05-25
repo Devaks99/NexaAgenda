@@ -22,7 +22,7 @@
 
 ### 💻 Desktop  
 
-![Tela desktop NexaAgenda](https://github.com/user-attachments/assets/5cad8db3-5d63-4386-add6-92598a65d471)
+![tela1 desktop NexaAgenda](https://github.com/user-attachments/assets/baf101de-5f62-4712-a339-6be07f0217ec)
 
 ---
 
