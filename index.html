@@ -11,6 +11,7 @@
   <div class="page-wrapper">
     <main class="container">
       <h1>📅 Eventos Tech</h1>
+      <button id="btn-add-event">➕ Adicionar Evento</button>
       <ul id="event-list"></ul>
     </main>
 
@@ -21,7 +22,36 @@
         <h2 id="modal-title"></h2>
         <p id="modal-date"></p>
         <p id="modal-local"></p>
+        <p id="modal-descricao"></p>
         <a id="google-calendar-link" href="#" target="_blank">➕ Adicionar ao Google Calendar</a>
+        <button id="fui-button" style="margin-top:1rem;">✅ Fui ao evento</button>
+        <div id="user-event-controls" style="margin-top: 1rem; display:none;">
+          <button id="edit-event-btn">✏️ Editar</button>
+          <button id="delete-event-btn" style="margin-left:10px;">🗑️ Excluir</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para adicionar/editar evento do usuário -->
+    <div id="modal-form" class="modal hidden">
+      <div class="modal-content">
+        <span id="form-close" class="close">&times;</span>
+        <h2 id="form-title">Adicionar Evento</h2>
+        <form id="event-form">
+          <label for="event-name">Nome do evento:</label><br>
+          <input type="text" id="event-name" required><br><br>
+
+          <label for="event-date">Data e hora:</label><br>
+          <input type="datetime-local" id="event-date" required><br><br>
+
+          <label for="event-local">Local:</label><br>
+          <input type="text" id="event-local" required><br><br>
+
+          <label for="event-descricao">Descrição:</label><br>
+          <textarea id="event-descricao" rows="4" required></textarea><br><br>
+
+          <button type="submit" id="save-event-btn">Salvar</button>
+        </form>
       </div>
     </div>
 

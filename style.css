@@ -57,6 +57,7 @@ li:hover {
   background-color: #2a2a2a;
 }
 
+/* Botões */
 button {
   background-color: #00bcd4;
   color: white;
@@ -67,6 +68,29 @@ button {
   font-size: 14px;
 }
 
+#btn-add-event {
+  display: block;
+  margin: 0 auto 20px auto;
+  background-color: #4caf50;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#btn-add-event:hover {
+  background-color: #45a049;
+}
+
+#fui-button {
+  margin-top: 15px; /* Espaçamento entre o link e o botão */
+}
+/* fim dos Botões */
+
+/* Estilos para o Modal */
 .modal {
   position: fixed;
   top: 0;
@@ -88,11 +112,13 @@ button {
   background: #1c1c1c;
   padding: 20px;
   border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  max-height: 90vh;
+  max-width: 100%;   
+  width: 100%;
+  max-width: 600px;
   overflow-y: auto;
   box-sizing: border-box;
+  margin: 0 auto;
+  margin-top: 140px;
 }
 
 #modal-title {
@@ -114,6 +140,14 @@ button {
   cursor: pointer;
   color: white;
 }
+
+#modal #google-calendar-link,
+#modal #fui-button {
+  display: block;
+}
+
+/* fim dos modal */
+
 
 /* Estilo para o link do Google Agenda */
 #google-calendar-link {
@@ -144,7 +178,6 @@ footer {
 }
 
 /* >>>>> Responsividade <<<<< */
-
 @media(min-width: 601px) {
   body, html {
     height: 100%;
@@ -170,9 +203,20 @@ footer {
   }
 }
 
+@media (min-width: 600px) {
+  #google-calendar-link {
+    margin-bottom: 10px; /* Espaço entre o link e o botão */
+  }
+
+  #fui-button {
+    margin-top: 0;
+  }
+}
+
 @media (max-width: 600px) {
   .modal-content {
     width: 90%;
+    max-width: none;
     max-height: 90vh;
     overflow-y: auto;
   }

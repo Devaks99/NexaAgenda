@@ -1,4 +1,4 @@
-const eventos = [
+const eventosFixos = [
   {
     nome: "Visita técnica na Neurotech",
     data: "2025-05-27T08:00",
@@ -37,28 +37,37 @@ const eventos = [
   }
 ];
 
+// Eventos do usuário salvos localmente
+let eventosUsuario = JSON.parse(localStorage.getItem("eventosUsuario")) || [];
+
+// Eventos concluídos
+let concluidos = JSON.parse(localStorage.getItem("eventosConcluidos")) || [];
+
 const eventList = document.getElementById("event-list");
 const modal = document.getElementById("modal");
 const modalTitle = document.getElementById("modal-title");
 const modalDate = document.getElementById("modal-date");
 const modalLocal = document.getElementById("modal-local");
-const modalClose = document.querySelector(".close");
+const modalDescricao = document.getElementById("modal-descricao");
 const googleCalendarLink = document.getElementById("google-calendar-link");
+const modalClose = document.querySelector("#modal .close");
+const fuiButton = document.getElementById("fui-button");
+const userEventControls = document.getElementById("user-event-controls");
+const editEventBtn = document.getElementById("edit-event-btn");
+const deleteEventBtn = document.getElementById("delete-event-btn");
 
-// Campo para descrição
-const modalDescricao = document.createElement("p");
-modalDescricao.id = "modal-descricao";
-document.querySelector(".modal-content").insertBefore(modalDescricao, googleCalendarLink);
+const btnAddEvent = document.getElementById("btn-add-event");
+const modalForm = document.getElementById("modal-form");
+const formClose = document.getElementById("form-close");
+const formTitle = document.getElementById("form-title");
+const eventForm = document.getElementById("event-form");
+const eventNameInput = document.getElementById("event-name");
+const eventDateInput = document.getElementById("event-date");
+const eventLocalInput = document.getElementById("event-local");
+const eventDescricaoInput = document.getElementById("event-descricao");
+const saveEventBtn = document.getElementById("save-event-btn");
 
-// Botão "Fui ao evento"
-const fuiButton = document.createElement("button");
-fuiButton.textContent = "✅ Fui ao evento";
-fuiButton.id = "fui-button";
-fuiButton.style.marginTop = "1rem";
-document.querySelector(".modal-content").appendChild(fuiButton);
-
-// Armazena eventos concluídos
-let concluidos = JSON.parse(localStorage.getItem("eventosConcluidos")) || [];
+let eventoAtualIndex = null; // Para edição
 
 function formatarData(data) {
   return new Date(data).toLocaleDateString("pt-BR") + " às " + new Date(data).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
@@ -70,55 +79,157 @@ function gerarLinkGoogleCalendar(evento) {
   return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(evento.nome)}&dates=${start.toISOString().replace(/[-:]/g, "").split(".")[0]}Z/${end.toISOString().replace(/[-:]/g, "").split(".")[0]}Z&details=${encodeURIComponent(evento.descricao)}&location=${encodeURIComponent(evento.local)}&sf=true&output=xml`;
 }
 
+// Atualiza lista unindo fixos + usuário
 function atualizarListaEventos() {
   eventList.innerHTML = "";
-  eventos
-    .sort((a, b) => new Date(a.data) - new Date(b.data))
-    .forEach((evento, i) => {
-      const li = document.createElement("li");
-      if (i === 0) li.classList.add("highlight");
 
-      const concluido = concluidos.includes(evento.nome);
-      li.innerHTML = `
-        <div>
-          <strong>${evento.nome} ${concluido ? "✅" : ""}</strong><br>
-          🗓️ ${formatarData(evento.data)}
-        </div>
-        <button onclick="verDetalhes(${i})">Ver detalhes</button>
-      `;
-      eventList.appendChild(li);
+  // Combina fixos + usuário
+  const todosEventos = [...eventosFixos.map(e => ({...e, tipo: "fixo"})),
+                       ...eventosUsuario.map((e, i) => ({...e, tipo: "usuario", indexUsuario: i}))];
+
+  // Ordena por data
+  todosEventos.sort((a, b) => new Date(a.data) - new Date(b.data));
+
+  todosEventos.forEach((evento, i) => {
+    const li = document.createElement("li");
+    if (i === 0) li.classList.add("highlight");
+
+    const concluido = concluidos.includes(evento.nome);
+
+    li.innerHTML = `
+      <div>
+        <strong>${evento.nome} ${concluido ? "✅" : ""}</strong><br>
+        🗓️ ${formatarData(evento.data)}<br>
+        📍 ${evento.local}<br>
+        <button class="btn-detalhes" data-tipo="${evento.tipo}" data-index="${evento.tipo === "usuario" ? evento.indexUsuario : i}">Detalhes</button>
+      </div>
+    `;
+
+    eventList.appendChild(li);
+  });
+
+  // Adiciona eventos nos botões detalhes
+  document.querySelectorAll(".btn-detalhes").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tipo = btn.getAttribute("data-tipo");
+      const idx = parseInt(btn.getAttribute("data-index"));
+      abrirModalEvento(tipo, idx);
     });
+  });
 }
 
-window.verDetalhes = function(index) {
-  const evento = eventos[index];
-  modalTitle.textContent = evento.nome;
-  modalDate.textContent = "🗓️ " + formatarData(evento.data);
-  modalLocal.textContent = "📍 " + evento.local;
-  modalDescricao.textContent = "📄 " + evento.descricao;
-  googleCalendarLink.href = gerarLinkGoogleCalendar(evento);
-
-  const agora = new Date();
-  const dataEvento = new Date(evento.data);
-
-  if (dataEvento <= agora && !concluidos.includes(evento.nome)) {
-    fuiButton.style.display = "inline-block";
-    fuiButton.onclick = () => {
-      concluidos.push(evento.nome);
-      localStorage.setItem("eventosConcluidos", JSON.stringify(concluidos));
-      modal.classList.add("hidden");
-      atualizarListaEventos();
-    };
+// Abre modal com detalhes
+function abrirModalEvento(tipo, idx) {
+  let evento;
+  if (tipo === "fixo") {
+    evento = eventosFixos[idx];
+    userEventControls.style.display = "none";
   } else {
-    fuiButton.style.display = "none";
+    evento = eventosUsuario[idx];
+    userEventControls.style.display = "block";
   }
 
-  modal.classList.remove("hidden");
+  modalTitle.textContent = evento.nome;
+  modalDate.textContent = `🗓️ ${formatarData(evento.data)}`;
+  modalLocal.textContent = `📍 ${evento.local}`;
+  modalDescricao.textContent = evento.descricao;
+  googleCalendarLink.href = gerarLinkGoogleCalendar(evento);
+  modal.style.display = "block";
+
+  // Atualiza texto do botão "Eu fui ao evento" baseado no estado
+  if (concluidos.includes(evento.nome)) {
+    fuiButton.textContent = "Desmarcar: Eu fui ao evento";
+  } else {
+    fuiButton.textContent = "Eu fui ao evento";
+  }
+
+  // Toggle marcar/desmarcar como ido
+  fuiButton.onclick = () => {
+    const pos = concluidos.indexOf(evento.nome);
+    if (pos === -1) {
+      concluidos.push(evento.nome);
+      alert("Parabéns por ter ido ao evento!");
+    } else {
+      concluidos.splice(pos, 1);
+      alert("Evento desmarcado como ido.");
+    }
+    localStorage.setItem("eventosConcluidos", JSON.stringify(concluidos));
+    atualizarListaEventos();
+    modal.style.display = "none";
+  };
+
+  // Editar evento do usuário
+  editEventBtn.onclick = () => {
+    abrirModalFormulario("editar", idx);
+  };
+
+  // Excluir evento do usuário
+  deleteEventBtn.onclick = () => {
+    if (confirm(`Deseja realmente excluir o evento "${evento.nome}"?`)) {
+      eventosUsuario.splice(idx, 1);
+      localStorage.setItem("eventosUsuario", JSON.stringify(eventosUsuario));
+      modal.style.display = "none";
+      atualizarListaEventos();
+    }
+  };
+}
+
+// Abre modal formulário para adicionar ou editar evento
+function abrirModalFormulario(acao, idx = null) {
+  modalForm.style.display = "block";
+  if (acao === "editar") {
+    formTitle.textContent = "Editar Evento";
+    eventoAtualIndex = idx;
+    const ev = eventosUsuario[idx];
+    eventNameInput.value = ev.nome;
+    eventDateInput.value = ev.data;
+    eventLocalInput.value = ev.local;
+    eventDescricaoInput.value = ev.descricao;
+  } else {
+    formTitle.textContent = "Adicionar Evento";
+    eventoAtualIndex = null;
+    eventForm.reset();
+  }
+  modal.style.display = "none"; // fecha detalhes se abrir formulário
+}
+
+// Fecha modais
+modalClose.onclick = () => { modal.style.display = "none"; };
+formClose.onclick = () => { modalForm.style.display = "none"; };
+
+// Fecha modais clicando fora do conteúdo
+window.onclick = (e) => {
+  if (e.target === modal) modal.style.display = "none";
+  if (e.target === modalForm) modalForm.style.display = "none";
 };
 
-modalClose.onclick = () => modal.classList.add("hidden");
-window.onclick = e => {
-  if (e.target == modal) modal.classList.add("hidden");
+btnAddEvent.onclick = () => {
+  abrirModalFormulario("adicionar");
 };
 
+// Salvar evento no formulário
+eventForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const novoEvento = {
+    nome: eventNameInput.value.trim(),
+    data: eventDateInput.value,
+    local: eventLocalInput.value.trim(),
+    descricao: eventDescricaoInput.value.trim()
+  };
+
+  if (eventoAtualIndex !== null) {
+    // Editar evento existente
+    eventosUsuario[eventoAtualIndex] = novoEvento;
+  } else {
+    // Adicionar novo evento
+    eventosUsuario.push(novoEvento);
+  }
+
+  localStorage.setItem("eventosUsuario", JSON.stringify(eventosUsuario));
+  modalForm.style.display = "none";
+  atualizarListaEventos();
+});
+
+// Inicializa lista
 atualizarListaEventos();
