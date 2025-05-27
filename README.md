@@ -10,15 +10,10 @@
 - 📍 Detalhes com local, data e título dos eventos
 - 🕒 Modal com botão para adicionar ao Google Calendar
 - 📱 Layout 100% responsivo (mobile, tablet e desktop)
-- 🎨 Design moderno com tema escuro e cores em destaque
-- 🖼️ Ícone e favicon personalizados
-- 🧍‍♀️ Footer fixo com crédito da criadora (Ana 👩‍💻)
+- 🎨 Design moderno 
+- 🧍‍♀️ Footer com crédito da criadora (Ana 👩‍💻)
 
 ---
-
-## 🖥️ Demonstração
-
-> _Adicione aqui screenshots reais do seu projeto no Canva ou tiradas do navegador._
 
 ### 💻 Desktop  
 
@@ -33,7 +28,7 @@
 ├── 📄 index.html → Estrutura principal do site
 ├── 🎨 style.css → Estilização customizada e responsiva
 ├── ⚙️ script.js → Funcionalidade do modal e eventos
-├── 📸 /img/ → Ícones e favicon
+├── 📸 /img/ → favicon
 └── 📄 README.md → Documentação do projeto
 
 
@@ -41,9 +36,9 @@
 
 ## 🔍 Tecnologias Utilizadas
 
-- **HTML5** semântico
-- **CSS3** com media queries para responsividade
-- **JavaScript Vanilla** para interação
+- **HTML5** 
+- **CSS3** 
+- **JavaScript** 
 - **Google Calendar Link** via `href`
 - **Design Responsivo** com flexbox
 - **Favicon Personalizado** para identidade visual
