@@ -1,11 +1,5 @@
 const eventosFixos = [
   {
-    nome: "Visita técnica na Neurotech",
-    data: "2025-05-27T14:00",
-    local: "R. de São Jorge, 240 - Recife, PE (Recife Antigo)",
-    descricao: "Descrição: A Neurotech é uma marca do grupo B3, 100% brasileira, pioneira na criação de soluções avançadas de Inteligência Artificial, Machine Learning e Big Data."
-  },
-  {
     nome: "Meetup",
     data: "2025-05-29T18:00",
     local: "R. Alfândega, 35, Recife/PE (No Cais da Alfândega, Recife Antigo)",
